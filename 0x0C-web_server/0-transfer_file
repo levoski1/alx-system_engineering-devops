@@ -1,24 +1,14 @@
 #!/usr/bin/env bash
+# transfer a file from our client to a server
+if [ $# -lt 3 ];
+then
+    echo "Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY";
+    exit;
+fi;
 
-# Check if all required arguments are provided
-if [ $# -lt 4 ]; then
-    echo "Usage: $0 PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
-    exit 1
+if [ $# -ge 4 ];
+then
+    scp -o StrictHostKeyChecking=no -i "$4" "$1" "$3"@"$2":~/
+else
+    scp -o StrictHostKeyChecking=no "$1" "$3"@"$2":~/
 fi
-
-# Check if the file exists
-if [ ! -f "$1" ]; then
-    echo "Error: File '$1' not found"
-    exit 1
-fi
-
-# Check if SSH key file exists
-if [ ! -f "$4" ]; then
-    echo "Error: SSH key file '$4' not found"
-    exit 1
-fi
-
-# Transfer the file using SCP
-scp -o StrictHostKeyChecking=no -i "$4" "$1" "$3"@"$2":~/ || { echo "Error: File transfer failed"; exit 1; }
-echo "File transferred successfully"
-
