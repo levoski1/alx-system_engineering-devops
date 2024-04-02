@@ -5,9 +5,6 @@
 sudo apt-get -y update
 sudo apt-get -y install nginx
 
-# creating an index.html page
-echo "Hello World" | sudo tee /var/www/html/index.html
-
 # Allows incoming traffic on the standard HTTP port (TCP port 80) 
 sudo ufw allow 'Nginx HTTP'
 
