@@ -1,14 +1,26 @@
 #!/usr/bin/env bash
-# This script configures the Nginx server so that
-# /redirect_me is redirecting to another page
+# returns a custom header on request
 
-# update and install nginx
 sudo apt-get -y update
 sudo apt-get -y install nginx
 
+# Allows incoming traffic on the standard HTTP port (TCP port 80)
+sudo chown -R "$USER":"$USER" /var/www
+
+newlines="\\\terror_page 404 /404.html;\n\tlocation = /404.html {\n\t\troot /usr/share/nginx/html;\n\t\tinternal;\n\t}"
+sudo sed -i "27i $newlines" /etc/nginx/sites-available/default
+
+sudo sed -i "48i\\\tif (\$request_filename ~ redirect_me){\n\t\t\
+rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;\n\t}" /etc/nginx/sites-available/default
+
 sudo sed -i "47i\\\tadd_header X-Served-By $HOSTNAME;" /etc/nginx/sites-available/default
-echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Creating an index.html page
+echo "Levibliss tech" | sudo tee /var/www/html/index.nginx-debian.html
+
+# Create an error page
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+
 
 
 # Test for any syntax error
