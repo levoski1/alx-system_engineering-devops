@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-#  creates a symbolic link named default in the sites-enabled directory, pointin g to the default configuration file in the sites-available directory
+#  A symbolic link named default in the sites-enabled directory, pointing to the default configuration file in the sites-available directory
 
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 sudo service nginx start
+
