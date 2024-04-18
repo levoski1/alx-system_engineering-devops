@@ -1,0 +1,73 @@
+CREATE USER 'holberton_user'@'localhost' IDENTIFIED BY 'projectcorrection280hbtn';
+GRANT CREATE, SELECT ON *.* TO 'holberton_user'@'localhost';
+B7B3B788A8D3785C
+
+sudo ufw allow from 52.72.27.194 to any port 3306
+
+sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf
+
+# used for monitoring and managing replication setups by allowing users to inspect binary logs and replication status.
+GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost';
+
+
+				ON THE MASTER SERVER
+
+CREATE USER 'replica_user'@'%' IDENTIFIED BY '';
+
+# Grants a user the ability to act as a replication slave
+GRANT REPLICATION SLAVE ON *.* TO 'replica_user'@'%';
+
+# information about whether the user has the REPLICATION SLAVE privilege.
+SELECT user, Repl_slave_priv FROM mysql.user
+
+#grants the SELECT privilege on the mysql.user table to the user 'holberton_user' when connecting from 'localhost'.
+GRANT SELECT ON mysql.user TO 'holberton_user'@'localhost';
+
+FLUSH PRIVILEGES;
+
+sudo ufw allow from 52.72.27.194 to any port 3306/TCP
+
+# to delete any rule
+sudo ufw delete [rule]
+
+sudo ufw status
+
+# Anytime there is a change in conf file
+sudo systemctl restart mysql
+
+# to get the master server logfile
+SHOW MASTER STATUS; 
+file --> mysql-bin.000001
+position --> 154
+
+
+vi /etc/mysql/mysql.conf.d/mysqld.cnf
+
+server-id       = 1
+log_bin         = /var/log/mysql/mysql-bin.log
+binlog_do_db    = tyrell_corp
+
+
+
+
+
+					ON SLAVE SERVER
+
+vi /etc/mysql/mysql.conf.d/mysqld.cnf
+
+server-id       = 2
+log_bin         = /var/log/mysql/mysql-bin.log
+binlog_do_db    = tyrell_corp
+relay-log       = /var/log/mysql/mysql-relay-bin.log
+sudo myql
+
+CHANGE MASTER TO MASTER_HOST='54.89.32.136',
+MASTER_USER='replica_user',
+MASTER_PASSWORD='',
+MASTER_LOG_FILE='mysql-bin.000001',
+MASTER_LOG_POS=154;
+
+START SLAVE;
+
+
+SHOW SLAVE STATUS\G;
