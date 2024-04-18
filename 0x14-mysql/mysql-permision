@@ -1,0 +1,25 @@
+#create a database
+CREATE DATABASE tyrell_corp;
+
+#create a table
+CREATE TABLE nexus6 ( id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) );
+
+#insert into your table
+INSERT INTO nexus6 (name) VALUES ('levi');
+
+# grant permission to your user on your database
+GRANT ALL PRIVILEGES ON tyrell_corp.* TO 'holberton_user'@'localhost'
+
+# grant permission to your user on your table
+GRANT SELECT ON tyrell_corp.nexus6 TO 'holberton_user'@'localhost';
+
+# used for monitoring and managing replication setups by allowing users to inspect binary logs and replication status.
+GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost';
+
+# To see grants given to a user
+SHOW GRANTS FOR 'holberton_user'@'localhost';
+
+# show all grants
+SHOW GRANTS FOR 'holberton_user'@'localhost';
+#make changes
+FLUSH PRIVILEGES;

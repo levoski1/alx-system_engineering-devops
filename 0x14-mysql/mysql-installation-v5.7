@@ -1,0 +1,40 @@
+# Download the MySQL repository by executing the following command:
+wget https://dev.mysql.com/get/mysql-apt-config_0.8.12-1_all.deb
+
+# After the MySQL package has been successfully downloaded, install it:
+sudo dpkg -i mysql-apt-config_0.8.12-1_all.deb
+
+# Next, select Ubuntu Bionic.
+# After that, select the MySQL Server & Cluster option. Then, select mysql-5.7 and finally select Ok.
+
+# import the missing gpg key by running the following command:
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B7B3B788A8D3785C
+
+sudo apt update
+
+# To check whether MySQL 5.7 repository has been successfully installed, execute:
+sudo apt-cache policy mysql-server
+
+# Install MySQL 5.7
+sudo apt install -f mysql-client=5.7* mysql-community-server=5.7* mysql-server=5.7*
+
+# Secure your MySQL root user account
+sudo mysql_secure_installation
+
+# Check the MySQL version
+mysql -u root -p
+SELECT VERSION();
+
+# Add MySQL user and set privileges
+CREATE USER 'username'@'localhost' IDENTIFIED BY 'user_password';
+
+# grant privileges to it
+GRANT CREATE, SELECT ON *.* TO 'username'@'localhost';
+
+#  list of all the users in MySQL
+SELECT user FROM mysql.user;
+
+# Test MySQL 5.7
+sudo systemctl status mysql
+
+mysql -u root –p
