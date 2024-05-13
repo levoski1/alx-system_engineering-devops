@@ -1,16 +1,30 @@
 #!/usr/bin/env bash
-# print domains and subdomains
 
+# Script Name: print_domain_subdomain.sh
+# Description: This script retrieves DNS information for specified domains and subdomains.
+# Author: [Your Name]
+# Date: [Date]
+
+# Function to print DNS information for a domain and subdomain
 print_domain_subdomain () {
+    # Use dig to query DNS records for the specified domain
+    # Filter the output to only show the 'ANSWER SECTION'
+    # Replace occurrences of the specified domain with the subdomain
+    # Extract relevant information using awk
     dig "$1" | grep -A1 'ANSWER SECTION:' | sed -r "s/$1./$2/g" | awk -F" " ' NR==2 { print "The subdomain " $1 " is a " $4 " record and points to " $5 }'
 }
 
-if [ "$#" -eq 2 ]
-then
+# Main script execution starts here
+if [ "$#" -eq 2 ]; then
+    # If two arguments are provided, use the second argument as the subdomain
+    # and the first argument as the domain
     print_domain_subdomain "$2.$1" "$2"
 else
+    # If fewer than two arguments are provided, query predefined subdomains
+    # for the specified domain
     print_domain_subdomain "www.$1" "www"
     print_domain_subdomain "lb-01.$1" "lb-01"
     print_domain_subdomain "web-01.$1" "web-01"
     print_domain_subdomain "web-02.$1" "web-02"
 fi
+
